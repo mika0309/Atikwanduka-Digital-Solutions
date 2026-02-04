@@ -1,1 +1,12 @@
 node_modules
+dist
+.env
+.env.local
+
+# server
+/server/node_modules
+/server/clicks.db
+/server/.env
+
+.vscode
+.DS_Store

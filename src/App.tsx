@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Admin from './Admin';
 import { Menu, X, CheckCircle, ArrowRight, Smartphone, Globe, Sprout, Users, BarChart3 } from 'lucide-react';
 import logo from './assets/logo.png';
 import heroImage from './assets/hero.png';
@@ -9,6 +10,14 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const BACKEND = (import.meta.env.VITE_BACKEND_URL as string) || 'http://localhost:3000';
+  const waHref = `${BACKEND.replace(/\/$/, '')}/api/whatsapp?text=${encodeURIComponent('Hello, I saw your site')}`;
+
+  // If running at /admin path, render the admin UI
+  if (typeof window !== 'undefined' && window.location.pathname === '/admin') {
+    return <Admin />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
@@ -304,10 +313,15 @@ const App: React.FC = () => {
             </form>
             <div className="mt-8 pt-8 border-t border-slate-200">
                 <p className="text-slate-500 mb-4">Or chat with us directly:</p>
-                <button className="inline-flex items-center justify-center px-6 py-3 bg-green-500 text-white rounded-full font-medium hover:bg-green-600 transition-colors">
-                    <Smartphone className="mr-2 h-5 w-5" />
-                    Chat on WhatsApp
-                </button>
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-green-500 text-white rounded-full font-medium hover:bg-green-600 transition-colors"
+                >
+                  <Smartphone className="mr-2 h-5 w-5" />
+                  Chat on WhatsApp
+                </a>
             </div>
           </div>
         </div>
@@ -344,7 +358,8 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-8 text-sm text-center">
-            &copy; {new Date().getFullYear()} Atikwanduka Digital Solutions. All rights reserved.
+            <div className="mb-2">&copy; {new Date().getFullYear()} Atikwanduka Digital Solutions. All rights reserved.</div>
+            <div><a href="/admin" className="text-slate-400 hover:text-white">Admin</a></div>
           </div>
         </div>
       </footer>
